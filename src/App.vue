@@ -1,41 +1,39 @@
 <template>
+    <a-drawer
+        :width="300"
+        :closable="false"
+        placement="left"
+        :visible="drawerVisiable"
+        @close="drawerVisiable = false"
+    >
+        <Menu></Menu>
+    </a-drawer>
     <a-layout>
         <a-layout-sider
-            breakpoint="lg"
-            collapsed-width="0"
-            style="min-height: 100vh"
+            v-if="!isMobile"
+            style="min-height: 100vh; background-color: white"
         >
             <div class="logo" />
-            <a-menu
-                v-model:selectedKeys="selectedKeys"
-                theme="dark"
-                mode="inline"
-            >
-                <a-menu-item key="/">
-                    <RouterLink to="/">
-                        <BankOutlined />
-                        <span class="nav-text">首页</span>
-                    </RouterLink>
-                </a-menu-item>
-                <a-menu-item key="/diary">
-                    <RouterLink to="/diary">
-                        <BookOutlined />
-                        <span class="nav-text">日记</span>
-                    </RouterLink>
-                </a-menu-item>
-                <a-menu-item key="/user">
-                    <RouterLink to="/user">
-                        <UserOutlined />
-                        <span class="nav-text">用户中心</span>
-                    </RouterLink>
-                </a-menu-item>
-            </a-menu>
+            <Menu></Menu>
         </a-layout-sider>
         <a-layout>
             <a-layout-header
                 :style="{ background: '#fff', paddingLeft: '20px' }"
             >
-                <h1 style="font-weight: bold; font-size: x-large">日记</h1>
+                <MenuUnfoldOutlined
+                    v-if="isMobile"
+                    style="font-size: x-large"
+                    @click="drawerVisiable = true"
+                />
+                <h1
+                    style="
+                        font-weight: bold;
+                        font-size: x-large;
+                        display: inline;
+                    "
+                >
+                    日记
+                </h1>
             </a-layout-header>
             <a-layout-content :style="{ margin: '24px 16px 0' }">
                 <div
@@ -49,31 +47,26 @@
                 </div>
             </a-layout-content>
             <a-layout-footer style="text-align: center">
-                Ant Design ©2018 Created by Ant UED
+                <!-- Ant Design ©2018 Created by Ant UED -->
             </a-layout-footer>
         </a-layout>
     </a-layout>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted, watch, computed } from "vue";
+<script setup>
+import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
-import {
-    UserOutlined,
-    BookOutlined,
-    BankOutlined,
-} from "@ant-design/icons-vue";
+import { MenuUnfoldOutlined } from "@ant-design/icons-vue";
+import "@/components/Menu.vue";
+import Menu from "./components/Menu.vue";
 
 const route = useRoute();
 
-const selectedKeys = ref<string[]>([""]);
-
-onMounted(() => {
-    console.log(isMobile.value);
-});
+const selectedKeys = ref([""]),
+    drawerVisiable = ref(false);
 
 watch(route, newVal => {
-    selectedKeys.value = [newVal.path];
+    selectedKeys.value = [newVal.path.split("/")[1]];
 });
 
 const isMobile = computed({

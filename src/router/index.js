@@ -6,10 +6,9 @@ const routes = [
     {
         path: "/",
         name: "index",
-        component: () => import("@/pages/HelloWorld.vue"),
+        component: () => import("@/pages/Readme.vue"),
         meta: {
             title: "首页",
-            keepAlive: true,
         },
     },
     {
@@ -17,15 +16,24 @@ const routes = [
         name: "diaryList",
         component: () => import("@/pages/DiaryList.vue"),
         meta: {
+            title: "写日记",
+            requiredLogin: true,
+        },
+    },
+    {
+        path: "/diary/edit",
+        name: "diaryEdit",
+        component: () => import("@/pages/DiaryEdit.vue"),
+        meta: {
             title: "日记",
         },
     },
     {
-        path: "/home",
-        name: "home",
-        component: () => import("@/pages/Home.vue"),
+        path: "/user/login",
+        name: "login",
+        component: () => import("@/pages/UserLogin.vue"),
         meta: {
-            title: "首页",
+            title: "登录",
         },
     },
     {

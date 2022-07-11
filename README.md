@@ -1,7 +1,24 @@
-# Vue 3 + Vite
+# A Diary 前端项目
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+这是 A Diary 项目的 Web 前端仓库，使用 Vue + Ant Design 编写。
 
-## Recommended IDE Setup
+## 运行
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+开发和测试环境：
+
+```bash
+yarn
+yarn dev
+```
+
+生产环境打包：
+
+```bash
+yarn build
+```
+
+## 感谢
+
+-   Vue.js 及其周边生态
+-   Ant Design
+-   [vue3-waterfall-plugin](https://github.com/heikaimu/vue3-waterfall-plugin)
