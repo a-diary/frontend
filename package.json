@@ -3,13 +3,15 @@
     "private": true,
     "version": "0.0.0",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host 0.0.0.0",
         "build": "vite build",
         "preview": "vite preview"
     },
     "dependencies": {
         "ant-design-vue": "^3.2.10",
-        "vue": "^3.2.25"
+        "nprogress": "^0.2.0",
+        "vue": "^3.2.25",
+        "vue-router": "4"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^2.3.3",
