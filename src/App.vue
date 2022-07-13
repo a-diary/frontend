@@ -6,7 +6,7 @@
         :visible="drawerVisiable"
         @close="drawerVisiable = false"
     >
-        <Menu></Menu>
+        <Menu />
     </a-drawer>
     <a-layout>
         <a-layout-sider
@@ -14,7 +14,7 @@
             style="min-height: 100vh; background-color: white"
         >
             <div class="logo" />
-            <Menu></Menu>
+            <Menu />
         </a-layout-sider>
         <a-layout style="min-height: 100vh">
             <a-layout-header
