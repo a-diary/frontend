@@ -96,6 +96,16 @@ const username = ref(""),
     diary_password = ref(""),
     diary_password_confirmation = ref("");
 const submit = () => {
+    if (password.value !== password_confirmation.value) {
+        message.error("两次输入的密码不一致");
+        return;
+    } else if (
+        save_method.value === "aes" &&
+        diary_password.value !== diary_password_confirmation.value
+    ) {
+        message.error("两次输入的日记密码不一致");
+        return;
+    }
     Axios.post("/user", {
         username: username.value,
         password: password.value,

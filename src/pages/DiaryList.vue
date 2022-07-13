@@ -110,7 +110,7 @@
                             >
                                 {{
                                     (
-                                        item.content.match(
+                                        decrypt(item.content).match(
                                             /[a-zA-Z0-9\u4e00-\u9fa5。？！【】《》@%（）:\/.?]/g
                                         ) || []
                                     ).join("")
@@ -152,6 +152,7 @@ import { Waterfall } from "vue-waterfall-plugin-next";
 import { store } from "../store";
 import "vue-waterfall-plugin-next/style.css";
 import { useRoute } from "vue-router";
+import Encrypt from "../plugins/encrypt";
 const route = useRoute();
 
 const isMobile = computed({
@@ -187,6 +188,18 @@ const getDiaryList = () => {
 };
 
 getDiaryList();
+
+const decrypt = content => {
+    if (
+        store.state.user.save_method === "aes" &&
+        route.name !== "diaryPublicList"
+    )
+        return Encrypt.cbc_decrypt(
+            content,
+            sessionStorage.getItem("diaryPassword")
+        );
+    return content;
+};
 
 watch(route, newVal => {
     if (["diaryList", "diaryPublicList"].includes(newVal.name)) {

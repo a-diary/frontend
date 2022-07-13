@@ -15,7 +15,7 @@
     <a-form
         :model="user"
         name="basic"
-        :label-col="{ span: 4, style: { maxWidth: '150px' } }"
+        :label-col="{ span: 4 }"
         :wrapper-col="{ span: 8 }"
         autocomplete="off"
         @finish="submit"

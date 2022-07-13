@@ -17,6 +17,7 @@ yarn dev
 生产环境打包：
 
 ```bash
+yarn
 yarn build
 ```
 

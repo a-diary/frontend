@@ -20,6 +20,7 @@ const routes = [
         meta: {
             title: "我的日记",
             requiredLogin: true,
+            requireDiaryPwd: true,
             menu: "diary",
         },
     },
@@ -38,6 +39,17 @@ const routes = [
         component: () => import("@/pages/DiaryView.vue"),
         meta: {
             title: "日记详情",
+            requireDiaryPwd: true,
+            menu: "diary",
+        },
+    },
+    {
+        path: "/diary/password",
+        name: "diaryPassword",
+        component: () => import("@/pages/DiaryPassword.vue"),
+        meta: {
+            title: "验证日记密码",
+            requiredLogin: true,
             menu: "diary",
         },
     },
@@ -48,6 +60,7 @@ const routes = [
         meta: {
             title: "写日记",
             requiredLogin: true,
+            requireDiaryPwd: true,
             menu: "diary",
         },
     },
@@ -100,9 +113,13 @@ router.beforeEach((to, from, next) => {
     NProgress.start();
     if (to.meta.requiredLogin && !store.getters.loggedIn) {
         next({ name: "login", params: { next: to.path } });
-    }
-    window.document.title = to.meta.title + " - A Diary";
-    next();
+    } else if (
+        to.meta.requireDiaryPwd &&
+        store.state.user.save_method === "aes" &&
+        sessionStorage.getItem("diaryPassword") === null
+    ) {
+        next({ name: "diaryPassword", params: { next: to.path } });
+    } else next();
 });
 
 router.afterEach(() => {

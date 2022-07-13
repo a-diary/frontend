@@ -35,6 +35,8 @@ import { useRoute } from "vue-router";
 import { Axios } from "../plugins/axios";
 import { ref } from "vue";
 import { FormOutlined } from "@ant-design/icons-vue";
+import { store } from "../store";
+import Encrypt from "../plugins/encrypt";
 const route = useRoute();
 
 const diary = ref({
@@ -46,12 +48,21 @@ const diary = ref({
     loading = ref(false);
 
 loading.value = true;
-Axios.get("/diary/" + route.params.id).then(res => {
-    const data = res.data;
-    data.tags = data.tags.split("|||");
-    diary.value = data;
-    setTimeout(() => {
-        loading.value = false;
-    }, 400);
-});
+Axios.get("/diary/" + route.params.id)
+    .then(res => {
+        const data = res.data;
+        data.tags = data.tags.split("|||").filter(tag => tag !== "");
+        if (store.state.user.save_method === "aes" && !data.public) {
+            data.content = Encrypt.cbc_decrypt(
+                data.content,
+                sessionStorage.getItem("diaryPassword")
+            );
+        }
+        diary.value = data;
+    })
+    .finally(() => {
+        setTimeout(() => {
+            loading.value = false;
+        }, 400);
+    });
 </script>

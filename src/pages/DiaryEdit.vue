@@ -47,6 +47,8 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { router } from "../router";
 import { message } from "ant-design-vue";
+import { store } from "../store";
+import Encrypt from "../plugins/encrypt";
 const route = useRoute();
 
 const diary = ref({
@@ -90,13 +92,22 @@ const submit = () => {
         return;
     }
     submitDisabled.value = true;
+    const data = diary.value;
+    data.tags = data.tags.join("|||");
+    data.cover = data.cover || null;
+    if (store.state.user.save_method === "aes") {
+        data.content = Encrypt.cbc_encrypt(
+            data.content,
+            sessionStorage.getItem("diaryPassword")
+        );
+    }
     if (route.params.id) {
         Axios.put("/diary/" + route.params.id, {
-            title: diary.value.title,
-            content: diary.value.content,
-            tags: diary.value.tags.join("|||"),
-            public: diary.value.public,
-            cover: diary.value.cover || null,
+            title: data.title,
+            content: data.content,
+            tags: data.tags,
+            public: data.public,
+            cover: data.cover,
         }).then(res => {
             message.success("保存成功");
             submitDisabled.value = false;
@@ -104,11 +115,11 @@ const submit = () => {
         });
     } else {
         Axios.post("/diary", {
-            title: diary.value.title,
-            content: diary.value.content,
-            tags: diary.value.tags.join("|||"),
-            public: diary.value.public,
-            cover: diary.value.cover || null,
+            title: data.title,
+            content: data.content,
+            tags: data.tags,
+            public: data.public,
+            cover: data.cover,
         }).then(res => {
             message.success("保存成功");
             submitDisabled.value = false;
@@ -120,7 +131,13 @@ const submit = () => {
 if (route.params.id) {
     Axios.get("/diary/" + route.params.id).then(res => {
         const data = res.data;
-        data.tags = data.tags.split("|||");
+        data.tags = data.tags.split("|||").filter(tag => tag !== "");
+        if (store.state.user.save_method === "aes") {
+            data.content = Encrypt.cbc_decrypt(
+                data.content,
+                sessionStorage.getItem("diaryPassword")
+            );
+        }
         diary.value = data;
     });
 }
