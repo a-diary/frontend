@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { store } from "../store";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
@@ -9,6 +10,7 @@ const routes = [
         component: () => import("@/pages/Readme.vue"),
         meta: {
             title: "首页",
+            menu: "",
         },
     },
     {
@@ -16,8 +18,27 @@ const routes = [
         name: "diaryList",
         component: () => import("@/pages/DiaryList.vue"),
         meta: {
-            title: "写日记",
+            title: "我的日记",
             requiredLogin: true,
+            menu: "diary",
+        },
+    },
+    {
+        path: "/diary/public",
+        name: "diaryPublicList",
+        component: () => import("@/pages/DiaryList.vue"),
+        meta: {
+            title: "公开日记",
+            menu: "diary_public",
+        },
+    },
+    {
+        path: "/diary/:id",
+        name: "diaryView",
+        component: () => import("@/pages/DiaryView.vue"),
+        meta: {
+            title: "日记详情",
+            menu: "diary",
         },
     },
     {
@@ -25,7 +46,19 @@ const routes = [
         name: "diaryEdit",
         component: () => import("@/pages/DiaryEdit.vue"),
         meta: {
-            title: "日记",
+            title: "写日记",
+            requiredLogin: true,
+            menu: "diary",
+        },
+    },
+    {
+        path: "/user",
+        name: "user",
+        component: () => import("@/pages/User.vue"),
+        meta: {
+            title: "个人中心",
+            requiredLogin: true,
+            menu: "user",
         },
     },
     {
@@ -34,6 +67,16 @@ const routes = [
         component: () => import("@/pages/UserLogin.vue"),
         meta: {
             title: "登录",
+            menu: "user",
+        },
+    },
+    {
+        path: "/user/register",
+        name: "register",
+        component: () => import("@/pages/UserRegister.vue"),
+        meta: {
+            title: "注册",
+            menu: "user",
         },
     },
     {
@@ -55,6 +98,10 @@ NProgress.configure({
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
+    if (to.meta.requiredLogin && !store.getters.loggedIn) {
+        next({ name: "login", params: { next: to.path } });
+    }
+    window.document.title = to.meta.title + " - A Diary";
     next();
 });
 
@@ -62,4 +109,4 @@ router.afterEach(() => {
     NProgress.done();
 });
 
-export default router;
+export { router };

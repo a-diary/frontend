@@ -16,7 +16,7 @@
             <div class="logo" />
             <Menu></Menu>
         </a-layout-sider>
-        <a-layout>
+        <a-layout style="min-height: 100vh">
             <a-layout-header
                 :style="{ background: '#fff', paddingLeft: '20px' }"
             >
@@ -32,7 +32,7 @@
                         display: inline;
                     "
                 >
-                    日记
+                    A Diary 日记本
                 </h1>
             </a-layout-header>
             <a-layout-content :style="{ margin: '24px 16px 0' }">
@@ -51,11 +51,13 @@
             </a-layout-footer>
         </a-layout>
     </a-layout>
+    <a-back-top />
 </template>
 
 <script setup>
 import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router";
+import { store } from "./store";
 import { MenuUnfoldOutlined } from "@ant-design/icons-vue";
 import "@/components/Menu.vue";
 import Menu from "./components/Menu.vue";
@@ -75,6 +77,18 @@ const isMobile = computed({
     },
     set() {},
 });
+
+if (store.state.jwt) {
+    let data = atob(store.state.jwt.split(".")[1]);
+    data = JSON.parse(data);
+    if (data.exp + 86100 < Date.now() / 1000) {
+        store.commit("logout");
+    } else {
+        setTimeout(() => {
+            store.commit("logout");
+        }, (data.exp + 86400) * 1000 - Date.now());
+    }
+}
 </script>
 
 <style></style>

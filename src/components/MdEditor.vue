@@ -56,7 +56,6 @@ import { computed } from "vue";
 import { extendMarkdown } from "@/plugins/markdown";
 const emit = defineEmits(["update:content"]);
 
-const name = "MdEditor";
 const props = defineProps({
     content: String,
     previewOnly: {
@@ -83,7 +82,6 @@ const _content = computed({
         return props.content;
     },
     set(val) {
-        // console.log(content, "OK", val);
         emit("update:content", val);
     },
 });
@@ -96,11 +94,22 @@ const isMobile = computed({
 </script>
 
 <style>
-.markdown-emoji {
+#md-editor-v3 .markdown-emoji {
     display: inline-block;
     width: 1.2rem !important;
     height: 1.2rem !important;
     margin: 0 3px !important;
     border-radius: 0 !important;
+}
+
+#md-editor-v3 img {
+    max-width: 70% !important;
+    margin: 0 auto !important;
+}
+
+@media (max-width: 768px) {
+    #md-editor-v3 img {
+        max-width: 100% !important;
+    }
 }
 </style>
