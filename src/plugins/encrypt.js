@@ -16,7 +16,7 @@ const cbc_encrypt = (content, key, iv = "", hex = false) => {
         padding: CryptoJS.pad.Pkcs7,
     });
     if (hex) return encrypted.ciphertext.toString();
-    else return encrypted.toString();
+    return encrypted.toString();
 };
 
 const cbc_decrypt = (encrypted, key, iv = "", hex = false) => {
