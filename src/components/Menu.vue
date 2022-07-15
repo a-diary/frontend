@@ -6,12 +6,6 @@
                 <span class="nav-text">首页</span>
             </RouterLink>
         </a-menu-item>
-        <!-- <a-menu-item key="diary">
-            <RouterLink to="/diary">
-                <BookOutlined />
-                <span class="nav-text">日记</span>
-            </RouterLink>
-        </a-menu-item> -->
         <a-sub-menu key="Diary">
             <template #icon>
                 <BookOutlined />
@@ -25,6 +19,11 @@
             <a-menu-item key="diary_public">
                 <RouterLink to="/diary/public">
                     <span class="nav-text">公开日记</span>
+                </RouterLink>
+            </a-menu-item>
+            <a-menu-item key="diary_export">
+                <RouterLink to="/diary/export">
+                    <span class="nav-text">日记导出</span>
                 </RouterLink>
             </a-menu-item>
         </a-sub-menu>

@@ -44,6 +44,15 @@ const routes = [
         },
     },
     {
+        path: "/diary/export",
+        name: "diaryExport",
+        component: () => import("@/pages/DiaryExport.vue"),
+        meta: {
+            title: "日记导出",
+            menu: "diary_export",
+        },
+    },
+    {
         path: "/diary/password",
         name: "diaryPassword",
         component: () => import("@/pages/DiaryPassword.vue"),

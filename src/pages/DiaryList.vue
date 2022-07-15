@@ -85,7 +85,7 @@
                             "
                             style="z-index: 99999"
                         />
-                        <EllipsisOutlined />
+                        <DownloadOutlined @click="downloadDiary(item)" />
                     </template>
                     <a-card-meta
                         @click="
@@ -147,19 +147,20 @@ import {
     UnorderedListOutlined,
     AppstoreOutlined,
     FormOutlined,
+    DownloadOutlined,
 } from "@ant-design/icons-vue";
 import { Waterfall } from "vue-waterfall-plugin-next";
 import { store } from "../store";
 import "vue-waterfall-plugin-next/style.css";
 import { useRoute } from "vue-router";
 import Encrypt from "../plugins/encrypt";
+import { saveFile } from "../plugins/utils";
 const route = useRoute();
 
 const isMobile = computed({
     get() {
         return window.innerWidth < 768;
     },
-    set() {},
 });
 
 const diarys = ref([]),
@@ -219,6 +220,15 @@ const listMode = computed({
         }, 350);
     },
 });
+
+const downloadDiary = item => {
+    Axios.get(`/diary/${item.id}`).then(res => {
+        saveFile(
+            JSON.stringify(res.data, null, 4),
+            `日记导出_${item.id}_${item.title}.json`
+        );
+    });
+};
 </script>
 
 <style scoped>

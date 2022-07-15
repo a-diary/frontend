@@ -82,6 +82,7 @@ const _content = computed({
         return props.content;
     },
     set(val) {
+        // 此处代码靠
         emit("update:content", val);
     },
 });
@@ -89,7 +90,6 @@ const isMobile = computed({
     get() {
         return window.innerWidth < 768;
     },
-    set() {},
 });
 </script>
 

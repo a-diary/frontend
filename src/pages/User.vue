@@ -111,7 +111,6 @@ const isMobile = computed({
     get() {
         return window.innerWidth < 768;
     },
-    set() {},
 });
 
 const submit = () => {
